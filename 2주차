@@ -1,0 +1,159 @@
+#include <iostream>
+using namespace std;
+
+const int ROWS = 5, COLS = 4; // 5행 4열 좌석
+const int TRAIN = 3;
+
+void showSeats(char seats[TRAIN][ROWS][COLS]) {
+
+    for (int train = 0;train < TRAIN;train++) {
+        cout << "12    34 (" << train + 1 << "호차)" << endl;
+        cout << "--------" << endl;
+
+        for (int i = 0; i < ROWS; i++) {
+            // 좌석 출력
+            for (int j = 0; j < COLS; j++) {
+                cout << seats[train][i][j] << " ";
+                if (j == 1) cout << "  "; // 중간에 길 만들기
+            }
+            cout << endl;
+
+        }
+    }
+}
+
+
+
+int main() {
+    char seats[TRAIN][ROWS][COLS];
+    int number;
+    int childsum = 0;
+    int adultsum=0;
+    // 모든 좌석을 'O'로 초기화
+    for (int t = 0; t < TRAIN; t++)
+        for (int i = 0; i < ROWS; i++)
+            for (int j = 0; j < COLS; j++)
+                seats[t][i][j] = 'O';
+
+    while (true) {
+        cout << "--------" << endl;
+
+        cout << "**기차 예약 시스템**" << endl;
+        cout << "1.좌석 예약 시스템" << endl;
+        cout << "2.예약 변경" << endl;
+        cout << "3.프로그램 종료" << endl;
+        cout << "번호를 입력하세요: ";
+        cin >> number;
+
+        if (number == 1) {
+            showSeats(seats);
+
+            int row, col;
+            int adult, child, person;
+            int train;
+            cout << "성인(25000원): " << endl;
+            cin >> adult;
+            adultsum += adult;
+            cout << "청소년(18000원): " << endl;
+            cin >> child;
+            childsum += child;
+            person = adult + child;
+            for (int a = 0;a < person;a++) {
+                while (true) {
+
+                    cout << "몇호차를 예약하시겠습니까?" << endl;
+                    cin >> train;
+                    if (train >= 1 && train <= TRAIN) break;
+
+
+                    else cout << "예약 가능한 호차가 아닙니다." << endl;
+
+
+                }
+                while (true) {
+                    cout << "몇 열, 몇 번째 좌석을 예약하시겠습니까?" << endl;
+                    cin >> row >> col;
+
+                    if (row >= 1 && row <= ROWS && col >= 1 && col <= COLS) {
+                        if (seats[train - 1][row - 1][col - 1] == '1') {
+                            cout << "이미 예약되었습니다. 다른 좌석을 선택하세요." << endl;
+                        }
+                        else {
+                            seats[train - 1][row - 1][col - 1] = '1';  // 예약 완료
+                            cout << "예약되었습니다." << endl;
+                            showSeats(seats);  // 변경된 좌석 상태 출력
+                            break;
+                        }
+                    }
+                    else {
+                        cout << "예약 가능한 좌석이 아닙니다.다시 입력하세요." << endl;
+                    }
+                }
+            }
+
+            cout << "모든 좌석 예약이 완료되었습니다." << endl;
+
+        }
+        if (number == 2) {
+            int person;
+            showSeats(seats);
+            cout << "바꿀 좌석의 갯수를 입력하세요: ";
+            cin >> person;
+
+            for (int a = 0; a < person; a++) {
+                int oldtrain, oldrow, oldcol, newtrain, newrow, newcol;
+
+                while (true) {
+                    cout << "현재 좌석과 바꿀 좌석을 입력해주세요" << endl;
+                    cout << "현재 좌석(H호차, N열, M번째): ";
+                    cin >> oldtrain >> oldrow >> oldcol;
+
+                    if (oldtrain < 1 || oldtrain > TRAIN || oldrow < 1 || oldrow > ROWS || oldcol < 1 || oldcol > COLS) {
+                        cout << "좌석 번호를 다시 입력해주세요." << endl;
+                        continue;
+                    }
+
+                    if (seats[oldtrain - 1][oldrow - 1][oldcol - 1] != '1') {
+                        cout << "현재 좌석이 틀렸습니다. 다시 입력해주세요" << endl;
+                        continue;
+                    }
+
+                    cout << "변경 좌석(H호차, N열, M번째): ";
+                    cin >> newtrain >> newrow >> newcol;
+
+                    if (newtrain < 1 || newtrain > TRAIN || newrow < 1 || newrow > ROWS || newcol < 1 || newcol > COLS) {
+                        cout << "좌석 번호를 다시 입력해주세요" << endl;
+                        continue;
+                    }
+
+                    if (seats[newtrain - 1][newrow - 1][newcol - 1] == '1') {
+                        if (oldtrain == newtrain && oldrow == newrow && oldcol == newcol) {
+                            cout << "똑같은 자리입니다. 다른 좌석을 선택하세요." << endl;
+                            continue;
+                        }
+                       else cout << "이미 예약되었습니다. 다른 좌석을 선택하세요" << endl;
+                        continue;
+                    }
+
+                    
+
+                    // 좌석 변경
+                    seats[oldtrain - 1][oldrow - 1][oldcol - 1] = 'O';
+                    seats[newtrain - 1][newrow - 1][newcol - 1] = '1';
+                    cout << "좌석이 변경되었습니다." << endl;
+                    break;
+                }
+            }
+            showSeats(seats);
+        }
+
+        if (number == 3) {
+            int sum = 25000 * adultsum + 18000 * childsum;
+            cout << "총" << sum << "원 입니다" << endl;
+            break;
+        }
+
+        
+    }
+
+}
