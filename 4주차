@@ -1,0 +1,162 @@
+#include <iostream>
+using namespace std;
+
+// 정사각형 클래스
+class square {
+private:
+    int side;
+public:
+    square(int s) : side(s) {
+        cout << "\n***정사각형 계산기 접속***" << endl << endl;
+    }
+    ~square() {
+        cout << "\n정사각형 계산기 종료..." << endl << endl;
+    }
+    int area() {
+        return side * side;
+    }
+};
+
+// 삼각형 클래스
+class triangle {
+private:
+    int side, height;
+public:
+    triangle(int s, int h) : side(s), height(h) {
+        cout << "\n***삼각형 계산기 접속***" << endl<<endl;
+    }
+    ~triangle() {
+        cout << "\n삼각형 계산기 종료..." << endl<<endl;
+    }
+    int area() {
+        return (side * height) / 2;
+    }
+};
+
+// 정육면체 클래스
+class cube {
+private:
+    int side;
+public:
+    cube(int s) : side(s) {
+        cout << "\n***정육면체 계산기 접속***" << endl<<endl;
+    }
+    ~cube() {
+        cout << "\n정육면체 계산기 종료..." << endl<<endl;
+    }
+    int volume() {
+        return side * side * side;
+    }
+    int surface_area() {
+        return 6 * side * side;
+    }
+};
+
+//정사각뿔 클래스
+class pyramid {
+private:
+    int side, height, slant_height;
+public:
+    pyramid(int s, int h, int sh) :side(s), height(h), slant_height(sh) {
+        cout << "\n***정사각뿔 계산기 접속***" << endl<<endl;
+    }
+    ~pyramid() {
+        cout << "\n정사각뿔 계산기 종료..." << endl<<endl;
+    }
+    int volume() {
+        return side * side* height / 3;
+    }
+    int surface_area() {
+        return side * side + 2 * side * slant_height;
+    }
+};
+
+int main() {
+    int n;
+
+    while (true) {
+        cout << "원하는 계산을 선택하세요" << endl;
+        cout << "1. 정사각형 넓이 계산" << endl;
+        cout << "2. 삼각형 넓이 계산" << endl;
+        cout << "3. 정육면체 부피 계산" << endl;
+        cout << "4. 정육면체 겉넓이 계산" << endl;
+        cout << "5. 정사각뿔 부피 계산" << endl;
+        cout << "6. 정사각뿔 겉넓이 계산" << endl;
+        cout << "7. 종료" << endl;
+        cout << "선택: ";
+        cin >> n;
+
+        if (n == 7) {
+            cout << "\n프로그램을 종료합니다" << endl;
+            break;
+        }
+
+        switch (n) {
+        case 1: {
+            int s;
+            cout << "\n변의 길이 입력: ";
+            cin >> s;
+            
+            square sq(s);
+            cout << "\n정사각형의 넓이: " << sq.area() << endl;
+            break;
+        }
+        case 2: {
+            int s, h;
+            cout << "\n변의 길이 입력: ";
+            cin >> s;
+            cout << "\n높이 입력: ";
+            cin >> h;
+            
+            triangle tri(s, h);
+            cout << "\n삼각형의 넓이: " << tri.area() << endl;
+            break;
+        }
+        case 3: {
+            int s;
+            cout << "\n변의 길이 입력: ";
+            cin >> s;   
+            
+            cube cube(s);
+            cout << "\n정육면체 부피: " << cube.volume() << endl;
+            break;
+        }
+        case 4: {
+            int s;
+            cout << "\n변의 길이 입력: ";
+            cin >> s;
+
+            cube cube(s);
+            cout << "\n정육면체 겉넓이: " << cube.surface_area() << endl;
+            break;
+        }
+        case 5: {
+            int s, h;
+            cout << "\n사각형 한 변의 길이 입력: ";
+            cin >> s;
+            cout << "\n높이 입력: ";
+            cin >> h;
+
+            pyramid pyr(s, h, 0);
+            cout << "\n정사각뿔 부피: " <<pyr.volume()<< endl;
+            break;
+        }
+        case 6: {
+            int s, sh;
+            cout << "\n사각형 한 변의 길이 입력: ";
+            cin >> s;
+            cout << "\n빗변의 길이 입력: ";
+            cin >> sh;
+
+            pyramid pyr(s, 0, sh);
+            cout << "\n정사각뿔 겉넓이: " << pyr.surface_area() << endl;
+            break;
+        }
+        default:
+            cout << "\n잘못된 숫자입니다." << endl;
+            continue;
+        }
+    }
+
+    return 0;
+}
