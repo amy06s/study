@@ -1,0 +1,124 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Information {
+public:
+    string title;
+    string author;
+
+    Information(string t, string a) : title(t), author(a) {}
+};
+
+vector<Information> book_list;
+
+bool same_book(string* t, string* a) {
+    for (Information& book : book_list) {
+        if (book.title == *t && book.author == *a)
+            return true;
+    }
+    return false;
+}
+
+int find_book(string* t, string* a) {
+    for (size_t i = 0; i < book_list.size(); ++i) {
+        if (book_list[i].title == *t && book_list[i].author == *a)
+            return i;
+    }
+    return -1;
+}
+
+void add_book() {
+    string title, author;
+    cout << "***** 도서 추가를 진행합니다 *****" << endl;
+    cout << "도서 제목을 입력하세요: ";
+    getline(cin, title);
+    cout << "도서 저자를 입력하세요: ";
+    getline(cin, author);
+
+    if (same_book(&title, &author)) {
+        cout << "\n이미 등록된 도서입니다." << endl;
+    }
+    else {
+        book_list.push_back(Information(title, author));
+        cout << "\n도서가 성공적으로 추가되었습니다." << endl;
+    }
+}
+
+void search_book() {
+    string title, author;
+    cout << "***** 도서 검색을 진행합니다 *****" << endl;
+    cout << "도서 제목을 입력하세요: ";
+    getline(cin, title);
+    cout << "도서 저자를 입력하세요: ";
+    getline(cin, author);
+
+    int index = find_book(&title, &author);
+    if (index != -1) {
+        cout << "\n도서를 찾았습니다:" << endl;
+        cout << "제목: " << book_list[index].title << endl;
+        cout << "저자: " << book_list[index].author << endl;
+    }
+    else {
+        cout << "\n일치하는 도서를 찾을 수 없습니다." << endl;
+    }
+}
+
+void modify_book() {
+    string old_title, old_author;
+    cout << "***** 도서 정보를 수정합니다 *****" << endl;
+    cout << "수정할 도서 제목을 입력하세요: ";
+    getline(cin, old_title);
+    cout << "수정할 도서 저자를 입력하세요: ";
+    getline(cin, old_author);
+
+    int index = find_book(&old_title, &old_author);
+    if (index != -1) {
+        string new_title, new_author;
+        cout << "\n새로운 도서 제목을 입력하세요: ";
+        getline(cin, new_title);
+        cout << "새로운 도서 저자를 입력하세요: ";
+        getline(cin, new_author);
+        book_list[index].title = new_title;
+        book_list[index].author = new_author;
+        cout << "\n도서 정보가 성공적으로 수정되었습니다." << endl;
+    }
+    else {
+        cout << "\n일치하는 도서를 찾을 수 없습니다." << endl;
+    }
+}
+
+int main() {
+    while (true) {
+        cout << "\n***** 도서 정보 관리 프로그램 *****" << endl;
+        cout << "1. 도서 추가" << endl;
+        cout << "2. 도서 검색" << endl;
+        cout << "3. 도서 정보 수정" << endl;
+        cout << "4. 프로그램 종료" << endl;
+        cout << "\n번호를 입력하세요: ";
+
+        string choice;
+        getline(cin, choice);
+
+        if (choice == "1") {
+            add_book();
+        }
+        else if (choice == "2") {
+            search_book();
+        }
+        else if (choice == "3") {
+            modify_book();
+        }
+        else if (choice == "4") {
+            cout << "\n프로그램을 종료합니다." << endl;
+            break;
+        }
+        else {
+            cout << "\n정확한 번호를 입력하세요." << endl;
+        }
+    }
+
+    return 0;
+}
